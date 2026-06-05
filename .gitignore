@@ -1,0 +1,45 @@
+# Obsidian workspace settings
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+
+# Obsidian cache
+.obsidian/cache/
+.obsidian/workspace/
+
+# Obsidian plugins (optional - you might want to keep these)
+# .obsidian/plugins/
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*~
+
+# Dependencies
+node_modules/
+
+# Generated site output
+_site/*
+!_site/
+!_site/build.js
+dist/
+
+# Log files
+*.log
+
+# Backup files
+*.bak
+*.backup 
