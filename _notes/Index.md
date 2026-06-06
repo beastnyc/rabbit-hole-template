@@ -1,9 +1,9 @@
 ---
 layout: note
 title: Start Here
-description: The entry note for this fieldnotes site
+description: The entry note for this Rabbit Hole site
 last_modified: 2026-06-05
-fieldnotes: true
+publish: true
 type: origin
 rabbit_hole: start-here
 status: open
@@ -16,7 +16,7 @@ tags:
   - field-notes
 ---
 
-This is a small fieldnotes site for following ideas as they connect.
+This is a small Rabbit Hole site for following ideas as they connect.
 
 For now, there is no full index or careful map.
 

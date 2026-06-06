@@ -17,13 +17,13 @@ _notes/
 Add this to notes you want published:
 
 ```yaml
-fieldnotes: true
+publish: true
 ```
 
 Use this for notes you do not want published:
 
 ```yaml
-fieldnotes: false
+publish: false
 ```
 
 This is the simplest setup.
@@ -35,7 +35,7 @@ Keep your private vault wherever it already lives.
 When a note is ready for the website, copy or export it into this repo's `_notes/` folder and add:
 
 ```yaml
-fieldnotes: true
+publish: true
 ```
 
 This is safer if your real vault contains private material.
@@ -48,7 +48,7 @@ layout: note
 title: My Note Title
 description: A short description for search and previews
 last_modified: 2026-06-05
-fieldnotes: true
+publish: true
 type: spark
 rabbit_hole: my-rabbit-hole
 status: open
@@ -88,4 +88,4 @@ The safer pattern is:
 private vault -> selected public notes -> _notes/
 ```
 
-The `fieldnotes: true` guardrail is helpful, but a small public publishing folder is easier to audit.
+The `publish: true` guardrail is helpful, but a small public publishing folder is easier to audit.

@@ -3,7 +3,7 @@ layout: note
 title: Sample Rabbit Hole
 description: A sample note that demonstrates contextual links
 last_modified: 2026-06-05
-fieldnotes: true
+publish: true
 type: spark
 rabbit_hole: sample-rabbit-hole
 status: open

@@ -3,7 +3,7 @@ layout: note
 title: §What's Top Of Mind
 description: A loose now-ish note for current thinking
 last_modified: 2026-06-05
-fieldnotes: true
+publish: true
 type: index
 rabbit_hole: top-of-mind
 status: open

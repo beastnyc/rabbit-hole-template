@@ -116,6 +116,12 @@ function makeExcerpt(body, maxLength = 220) {
 function noteMetadata(attributes, body, noteId) {
   const tags = asArray(attributes.tags);
   const patterns = asArray(attributes.patterns);
+  const isPublished =
+    attributes.publish === true ||
+    attributes.publish === 'true' ||
+    attributes.fieldnotes === true ||
+    attributes.fieldnotes === 'true';
+
   return {
     id: noteId,
     title: attributes.title || 'Untitled',
@@ -128,7 +134,8 @@ function noteMetadata(attributes, body, noteId) {
     rabbitHole: attributes.rabbit_hole || '',
     energy: attributes.energy || '',
     patterns,
-    fieldnotes: attributes.fieldnotes === true || attributes.fieldnotes === 'true',
+    publish: isPublished,
+    fieldnotes: isPublished,
     url: `/notes/${noteId}.html`
   };
 }
@@ -620,7 +627,7 @@ const NOTE_CSS = String.raw`
             color: var(--text-primary);
             line-height: 1.2;
             position: relative;
-            letter-spacing: -0.4px;
+            letter-spacing: 0;
             padding-right: 60px;
             text-transform: uppercase;
         }
@@ -833,7 +840,7 @@ const NOTE_CSS = String.raw`
 
 // Build the site
 function buildSite() {
-  console.log('🔨 Building Fieldnotes site...');
+  console.log('🔨 Building Rabbit Hole site...');
   
   // Create output directories
   const outputDir = '_site';
@@ -881,8 +888,8 @@ function buildSite() {
       // Create note ID from filename
       const noteId = file.replace('.md', '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
       const metadata = noteMetadata(attributes, body, noteId);
-      if (!metadata.fieldnotes) {
-        console.log(`⏭️  Skipped private/non-field note: ${attributes.title || file}`);
+      if (!metadata.publish) {
+        console.log(`⏭️  Skipped private note: ${attributes.title || file}`);
         return;
       }
       const metaChips = [
@@ -898,7 +905,7 @@ function buildSite() {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${attributes.title || 'Note'} - Fieldnotes</title>
+    <title>${attributes.title || 'Note'} - Rabbit Hole</title>
     <link rel="stylesheet" href="/assets/css/style.css">
     <style>
 ${NOTE_CSS}
@@ -906,7 +913,7 @@ ${NOTE_CSS}
 </head>
 <body>
     <div class="top-nav">
-        <div class="nav-left"><a href="/" class="site-title">Fieldnotes</a></div>
+        <div class="nav-left"><a href="/" class="site-title">Rabbit Hole</a></div>
         <div class="nav-right">
             <div class="search-container">
                 <span class="search-icon">🔍</span>

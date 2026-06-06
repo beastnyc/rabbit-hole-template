@@ -3,7 +3,7 @@ layout: note
 title: Evergreen Notes
 description: A sample note about notes that stay alive
 last_modified: 2026-06-05
-fieldnotes: true
+publish: true
 type: term
 rabbit_hole: note-making
 status: open

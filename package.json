@@ -1,8 +1,9 @@
 {
-  "name": "fieldnotes-template",
+  "name": "rabbit-hole-template",
   "version": "1.0.0",
   "private": false,
-  "description": "A static field notes site with contextual note panes, Obsidian-style links, and public/private publishing guardrails.",
+  "description": "A static Rabbit Hole site template with contextual note panes, Obsidian-style links, and public/private publishing guardrails.",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "node _site/build.js && vite build",
