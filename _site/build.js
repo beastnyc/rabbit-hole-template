@@ -854,7 +854,7 @@ function buildSite() {
   }
   
   // Copy static files
-  const staticFiles = ['index.html', 'admin.html', 'serve.py'];
+  const staticFiles = ['index.html'];
   staticFiles.forEach(file => {
     if (fs.existsSync(file)) {
       fs.copyFileSync(file, path.join(outputDir, file));
