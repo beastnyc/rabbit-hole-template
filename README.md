@@ -21,7 +21,9 @@ npm run build
 npm run preview
 ```
 
-Then open the local preview URL shown in your terminal.
+Then open the local preview URL shown in your terminal. `npm run build` parses `_notes/` and writes the static site to `_site` via `_site/build.js`, then bundles the React stacking UI with Vite; `npm run preview` serves that built output — this is what Vercel deploys.
+
+There's also `npm run dev`, which starts Vite's dev server for the React UI in `src/`. It does not regenerate note pages, so it won't show your notes — re-run `npm run build` (and `npm run preview`) after editing `_notes/` to see real content.
 
 ## How Notes Publish
 
@@ -96,6 +98,8 @@ Useful `type` values:
 - `source`
 - `project-bridge`
 - `index`
+- `origin` — the entry note for the site (see `_notes/Index.md`)
+- `draft` — private, in-progress notes (pair with `publish: false`)
 
 Useful `status` values:
 
