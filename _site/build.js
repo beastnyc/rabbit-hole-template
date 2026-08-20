@@ -44,6 +44,11 @@ function convertImages(text) {
   return text;
 }
 
+// Turn a note title or filename into a URL-safe id
+function slugify(value) {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
 function copyDirRecursive(src, dest) {
   if (!fs.existsSync(src)) return;
   if (!fs.existsSync(dest)) fs.mkdirSync(dest, { recursive: true });
@@ -66,7 +71,7 @@ function convertWikiLinks(text) {
       .replace(/&quot;/g, '"')
       .replace(/&amp;/g, '&');
     const [target, display] = decodedLinkText.split('|').map(value => value.trim());
-    const noteId = target.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    const noteId = slugify(target);
     const label = display || target;
     return `<a href="/notes/${noteId}.html" class="note-link" data-note="${noteId}">${label}</a>`;
   });
@@ -854,7 +859,7 @@ function buildSite() {
   }
   
   // Copy static files
-  const staticFiles = ['index.html'];
+  const staticFiles = ['index.html', '404.html'];
   staticFiles.forEach(file => {
     if (fs.existsSync(file)) {
       fs.copyFileSync(file, path.join(outputDir, file));
@@ -886,7 +891,7 @@ function buildSite() {
       htmlContent = convertWikiLinks(htmlContent);
       
       // Create note ID from filename
-      const noteId = file.replace('.md', '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      const noteId = slugify(file.replace('.md', ''));
       const metadata = noteMetadata(attributes, body, noteId);
       if (!metadata.publish) {
         console.log(`⏭️  Skipped private note: ${attributes.title || file}`);
