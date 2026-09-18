@@ -42,4 +42,9 @@ dist/
 
 # Backup files
 *.bak
-*.backup 
+*.backup
+
+# Local secrets
+.env
+.env.local
+.env*.local 
