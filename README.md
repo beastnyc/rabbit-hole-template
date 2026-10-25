@@ -118,6 +118,8 @@ Vercel settings:
 - Output directory: `_site`
 - Install command: `npm install`
 
+Link previews use `og.png` (replace it with your own 1200×630 image). On Vercel the builder points previews at your production domain automatically; on a custom domain or another host, set `SITE_URL` (for example `https://notes.example.com`) when building.
+
 ## GitHub Template Setup
 
 After pushing this repo to GitHub:

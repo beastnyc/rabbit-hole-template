@@ -846,6 +846,16 @@ const NOTE_CSS = String.raw`
         }
 `;
 
+// Share image needs an absolute URL. SITE_URL (e.g. a custom domain) wins;
+// otherwise Vercel's production domain is used. With neither, no og:image.
+const SITE_URL = (process.env.SITE_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : '')
+).replace(/\/+$/, '');
+const SHARE_IMAGE_TAGS = SITE_URL
+  ? `    <meta property="og:image" content="${SITE_URL}/og.png">
+    <meta name="twitter:card" content="summary_large_image">`
+  : '';
+
 // Build the site
 function buildSite() {
   console.log('🔨 Building Rabbit Hole site...');
@@ -862,7 +872,7 @@ function buildSite() {
   }
   
   // Copy static files
-  const staticFiles = ['index.html', '404.html', 'favicon.svg'];
+  const staticFiles = ['index.html', '404.html', 'favicon.svg', 'og.png'];
   staticFiles.forEach(file => {
     if (fs.existsSync(file)) {
       fs.copyFileSync(file, path.join(outputDir, file));
@@ -918,6 +928,7 @@ function buildSite() {
     <meta property="og:type" content="article">
     <meta property="og:title" content="${escapeHtml(attributes.title || 'Note')} - Rabbit Hole">
     <meta property="og:description" content="${escapeHtml(metadata.description || metadata.excerpt)}">
+${SHARE_IMAGE_TAGS}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <style>
 ${NOTE_CSS}
