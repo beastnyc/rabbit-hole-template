@@ -1,4 +1,5 @@
 import React from 'react';
+import { stackScrollTarget } from './stackScroll.mjs';
 
 function getIdFromHref(href) {
   const match = href && href.match(/\/notes\/([^/.]+)(?:\.html)?/);
@@ -151,10 +152,12 @@ export default function StackedApp({ initial }) {
   React.useEffect(() => {
     const container = containerRef.current;
     if (container) {
-      container.scrollTo({
-        left: 0,
-        behavior: 'smooth',
-      });
+      const lastPanel = panelRefs.current[panels.length - 1];
+      container.scrollTo(stackScrollTarget({
+        flexDirection: window.getComputedStyle(container).flexDirection,
+        panelCount: panels.length,
+        lastPanelOffsetTop: lastPanel ? lastPanel.offsetTop : 0,
+      }));
     }
   }, [panels]);
 
