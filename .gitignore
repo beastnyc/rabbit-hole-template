@@ -46,5 +46,7 @@ dist/
 
 # Local secrets
 .env
-.env.local
-.env*.local 
+.env.*
+!.env.example
+*.pem
+*.key
