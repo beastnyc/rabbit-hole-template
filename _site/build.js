@@ -308,6 +308,9 @@ const NOTE_CSS = String.raw`
             letter-spacing: 0;
             opacity: 0.58;
             text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            min-height: 24px;
         }
 
         .site-title:hover {
@@ -859,7 +862,7 @@ function buildSite() {
   }
   
   // Copy static files
-  const staticFiles = ['index.html', '404.html'];
+  const staticFiles = ['index.html', '404.html', 'favicon.svg'];
   staticFiles.forEach(file => {
     if (fs.existsSync(file)) {
       fs.copyFileSync(file, path.join(outputDir, file));
@@ -911,6 +914,11 @@ function buildSite() {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${attributes.title || 'Note'} - Rabbit Hole</title>
+    <meta name="description" content="${escapeHtml(metadata.description || metadata.excerpt)}">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="${escapeHtml(attributes.title || 'Note')} - Rabbit Hole">
+    <meta property="og:description" content="${escapeHtml(metadata.description || metadata.excerpt)}">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <style>
 ${NOTE_CSS}
     </style>
@@ -921,7 +929,7 @@ ${NOTE_CSS}
         <div class="nav-right">
             <div class="search-container">
                 <span class="search-icon">🔍</span>
-                <input type="text" class="search-input" placeholder="Search notes..." id="searchInput">
+                <input type="text" class="search-input" placeholder="Search notes..." id="searchInput" aria-label="Search notes">
                 <div class="search-results" id="searchResults"></div>
             </div>
         </div>
