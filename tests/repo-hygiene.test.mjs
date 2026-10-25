@@ -12,3 +12,9 @@ test('.gitignore covers every .env variant and private key files', () => {
   const lines = readFileSync('.gitignore', 'utf8').split('\n').map((l) => l.trim());
   for (const p of ['.env', '.env.*', '!.env.example', '*.pem', '*.key']) assert.ok(lines.includes(p), `missing ${p}`);
 });
+
+test('the locked vite is past the 8.0.0-8.1.5 advisory range', () => {
+  const lock = JSON.parse(readFileSync('package-lock.json', 'utf8'));
+  const [maj, min, pat] = lock.packages['node_modules/vite'].version.split('.').map(Number);
+  assert.ok(maj > 8 || (maj === 8 && (min > 1 || (min === 1 && pat >= 6))), `vite ${maj}.${min}.${pat}`);
+});
