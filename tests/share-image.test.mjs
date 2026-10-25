@@ -45,3 +45,17 @@ test('with no known domain, no half-broken relative og:image is emitted', () => 
   const html = readFileSync(join(build({}), 'notes', 'index.html'), 'utf8');
   assert.doesNotMatch(html, /og:image/);
 });
+
+test('the root URL (the one people share) carries the share tags too', () => {
+  const html = readFileSync(join(build({ VERCEL_PROJECT_PRODUCTION_URL: 'my-hole.vercel.app' }), 'index.html'), 'utf8');
+  assert.match(html, /<meta property="og:image" content="https:\/\/my-hole\.vercel\.app\/og\.png">/);
+  assert.match(html, /<meta property="og:title" content="[^"]+">/);
+  assert.match(html, /<meta name="description" content="[^"]+">/);
+  assert.doesNotMatch(html, /<!-- share-image -->/);
+});
+
+test('root page has no og:image when no domain is known', () => {
+  const html = readFileSync(join(build({}), 'index.html'), 'utf8');
+  assert.doesNotMatch(html, /og:image/);
+  assert.doesNotMatch(html, /<!-- share-image -->/);
+});

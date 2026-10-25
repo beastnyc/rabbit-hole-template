@@ -884,6 +884,13 @@ function buildSite() {
       console.log(`📄 Copied ${file}`);
     }
   });
+
+  // The root redirect page is the URL people share: give it the share image too
+  const rootPage = path.join(outputDir, 'index.html');
+  if (fs.existsSync(rootPage)) {
+    const html = fs.readFileSync(rootPage, 'utf8');
+    fs.writeFileSync(rootPage, html.replace(/^\s*<!-- share-image -->\n?/m, SHARE_IMAGE_TAGS ? SHARE_IMAGE_TAGS + '\n' : ''));
+  }
   
   // Copy attachments if present
   if (fs.existsSync('attachments')) {
