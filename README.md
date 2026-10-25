@@ -67,7 +67,7 @@ Use Obsidian-style links:
 [[Sample Rabbit Hole|custom label]]
 ```
 
-The site turns those into contextual note links.
+The site turns those into contextual note links. A link to a note that does not exist yet, or to a `publish: false` note, shows as plain text instead of a broken link.
 
 ## Recommended Frontmatter
 

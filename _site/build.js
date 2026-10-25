@@ -64,7 +64,9 @@ function copyDirRecursive(src, dest) {
 }
 
 // Convert Obsidian wiki-links to HTML links
-function convertWikiLinks(text) {
+// knownNoteIds (optional Set): ids of notes that publish. Links to anything
+// else (not written yet, or publish: false) render as plain text, not a 404.
+function convertWikiLinks(text, knownNoteIds) {
   return text.replace(/\[\[([^\]]+)\]\]/g, (match, linkText) => {
     const decodedLinkText = linkText
       .replace(/&#39;/g, "'")
@@ -73,6 +75,9 @@ function convertWikiLinks(text) {
     const [target, display] = decodedLinkText.split('|').map(value => value.trim());
     const noteId = slugify(target);
     const label = display || target;
+    if (knownNoteIds && !knownNoteIds.has(noteId)) {
+      return `<span class="note-link-missing">${label}</span>`;
+    }
     return `<a href="/notes/${noteId}.html" class="note-link" data-note="${noteId}">${label}</a>`;
   });
 }
@@ -892,6 +897,12 @@ function buildSite() {
   
   if (fs.existsSync(notesDirPath)) {
     const noteFiles = fs.readdirSync(notesDirPath).filter(file => file.endsWith('.md'));
+    const publishedNoteIds = new Set();
+    noteFiles.forEach(file => {
+      const { attributes, body } = frontMatter(fs.readFileSync(path.join(notesDirPath, file), 'utf8'));
+      const noteId = slugify(file.replace('.md', ''));
+      if (noteMetadata(attributes, body, noteId).publish) publishedNoteIds.add(noteId);
+    });
     
     noteFiles.forEach(file => {
       const filePath = path.join(notesDirPath, file);
@@ -901,7 +912,7 @@ function buildSite() {
       // Convert images and wiki links, then to HTML
       const withImages = convertImages(body);
       let htmlContent = marked(withImages);
-      htmlContent = convertWikiLinks(htmlContent);
+      htmlContent = convertWikiLinks(htmlContent, publishedNoteIds);
       
       // Create note ID from filename
       const noteId = slugify(file.replace('.md', ''));
