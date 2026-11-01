@@ -254,6 +254,11 @@ const NOTE_CSS = String.raw`
             box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.1);
         }
 
+        .search-input:focus-visible {
+            outline: 2px solid var(--text-primary);
+            outline-offset: 2px;
+        }
+
         .search-icon {
             position: absolute;
             left: 12px;
@@ -288,6 +293,12 @@ const NOTE_CSS = String.raw`
         }
 
         .search-result:hover {
+            background: rgba(255, 107, 53, 0.08);
+        }
+
+        .search-result:focus-visible {
+            outline: 2px solid var(--text-primary);
+            outline-offset: -2px;
             background: rgba(255, 107, 53, 0.08);
         }
 
