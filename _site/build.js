@@ -151,8 +151,6 @@ function noteMetadata(attributes, body, noteId) {
 }
 
 const NOTE_CSS = String.raw`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
         :root {
             --bg-primary: #f8f9fa;
             --bg-secondary: #e9ecef;

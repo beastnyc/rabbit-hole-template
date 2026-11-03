@@ -133,6 +133,10 @@ After pushing this repo to GitHub:
 
 See [OBSIDIAN.md](OBSIDIAN.md).
 
+## Fonts
+
+Pages use Inter when it's installed and the system font otherwise, so the site makes no third-party font requests and works offline. To use a web font, self-host the files (for example in `public/fonts/`) and add an `@font-face` rule to `NOTE_CSS` in `_site/build.js` and to `404.html`.
+
 ## Privacy Checklist
 
 Before publishing a real notes site:
