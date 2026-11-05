@@ -133,9 +133,13 @@ After pushing this repo to GitHub:
 
 See [OBSIDIAN.md](OBSIDIAN.md).
 
+## Theming
+
+Note pages are styled by `theme/note.css`. Change the colors in its `:root` block (or any other rule) and run `npm run build`; the builder inlines the file into every note page, so there is no extra stylesheet request.
+
 ## Fonts
 
-Pages use Inter when it's installed and the system font otherwise, so the site makes no third-party font requests and works offline. To use a web font, self-host the files (for example in `public/fonts/`) and add an `@font-face` rule to `NOTE_CSS` in `_site/build.js` and to `404.html`.
+Pages use Inter when it's installed and the system font otherwise, so the site makes no third-party font requests and works offline. To use a web font, self-host the files (for example in `public/fonts/`) and add an `@font-face` rule to `theme/note.css` and to `404.html`.
 
 ## Privacy Checklist
 
