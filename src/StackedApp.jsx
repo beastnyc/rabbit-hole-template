@@ -450,11 +450,12 @@ export default function StackedApp({ initial }) {
 
   return (
     <div className="stack-shell">
-      <div className="trail-bar" aria-label="Rabbit hole trail">
+      <nav className="trail-bar" aria-label="Rabbit hole trail">
         <div className="trail-main">
           <button
             className="trail-chip"
             type="button"
+            aria-current={panels.length === 1 ? 'location' : undefined}
             onClick={() => returnToPanel(0)}
             title="Back to start"
           >
@@ -471,6 +472,7 @@ export default function StackedApp({ initial }) {
                     <button
                       className={`trail-chip ${panelIndex === panels.length - 1 ? 'active' : ''}`}
                       type="button"
+                      aria-current={panelIndex === panels.length - 1 ? 'location' : undefined}
                       onClick={() => returnToPanel(panelIndex)}
                       title={panel.meta?.status ? `${panel.meta.status} ${panel.meta.type || ''}` : panel.title}
                     >
@@ -482,7 +484,7 @@ export default function StackedApp({ initial }) {
             </>
           )}
         </div>
-      </div>
+      </nav>
       <div
         id="stack"
         className={`pane-container panels-${panels.length}`}
