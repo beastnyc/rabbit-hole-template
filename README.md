@@ -89,6 +89,21 @@ tags:
 ---
 ```
 
+### What each field does
+
+| Field | What it does |
+| --- | --- |
+| `title` | The note's heading, page title and search title. Defaults to `Untitled`. |
+| `description` | The meta and share-preview description, and searchable. Falls back to the note's opening text. |
+| `last_modified` | Orders search results, newest first, and shows as "Last updated" on the no-JavaScript version of the page. |
+| `publish` | Only `true` builds a page. Anything else keeps the note private. |
+| `type` | Shown in the chips under the note and in search results. Defaults to `field-note`. |
+| `status` | Shown in the chips under the note and in search results. Defaults to `open`. |
+| `rabbit_hole` | Shown in the chips under the note and in search results, so notes on one trail are easy to spot. |
+| `energy` | Shown in the chips under the note as "low energy", "high energy" and so on. |
+| `patterns` | Not shown on the page; only used by search, so readers can find notes by theme. |
+| `tags` | Not shown in the note panel; used by search (and listed on the no-JavaScript version of the page when `last_modified` is set). |
+
 Useful `type` values:
 
 - `spark`
