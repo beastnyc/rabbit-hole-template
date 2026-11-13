@@ -300,6 +300,11 @@ ${NOTE_CSS}
                 return String(value || '').toLowerCase();
             }
 
+            // Note text goes into innerHTML below; keep a "<" or "&" in a title as text.
+            function esc(value) {
+                return String(value || '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]);
+            }
+
             function noteHaystack(note) {
                 return [
                     note.title,
@@ -322,10 +327,10 @@ ${NOTE_CSS}
                 }
 
                 results.innerHTML = matches.slice(0, 8).map(note => (
-                    '<a class="search-result" href="' + note.url + '">' +
-                    '<div class="search-result-title">' + note.title + '</div>' +
-                    '<div class="search-result-meta">' + [note.type, note.status, note.rabbitHole].filter(Boolean).join(' / ') + '</div>' +
-                    '<div class="search-result-excerpt">' + (note.excerpt || '') + '</div>' +
+                    '<a class="search-result" href="' + esc(note.url) + '">' +
+                    '<div class="search-result-title">' + esc(note.title) + '</div>' +
+                    '<div class="search-result-meta">' + esc([note.type, note.status, note.rabbitHole].filter(Boolean).join(' / ')) + '</div>' +
+                    '<div class="search-result-excerpt">' + esc(note.excerpt) + '</div>' +
                     '</a>'
                 )).join('');
                 results.classList.add('active');
