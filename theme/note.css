@@ -607,6 +607,30 @@ body {
     -webkit-box-decoration-break: clone;
 }
 
+.note-backlinks {
+    margin-top: 36px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.note-body .note-backlinks-title {
+    margin: 0 0 10px;
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+.note-body .note-backlinks ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.note-body .note-backlinks li {
+    margin-bottom: 6px;
+}
+
 .note-meta {
     display: flex;
     align-items: center;

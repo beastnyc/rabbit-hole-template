@@ -82,6 +82,33 @@ function convertWikiLinks(text, knownNoteIds) {
   });
 }
 
+// Who links here: for each published note, the published notes that link to
+// it ([{ id, title }], once each, by title). Only published notes are read,
+// so a private note never shows up in another note's list.
+function collectBacklinks(publishedNotes) {
+  const ids = new Set(publishedNotes.map(note => note.id));
+  const backlinks = new Map();
+  publishedNotes.forEach(source => {
+    const targets = new Set();
+    for (const [, linkText] of source.body.matchAll(/\[\[([^\]]+)\]\]/g)) {
+      targets.add(slugify(linkText.split('|')[0].trim()));
+    }
+    targets.forEach(target => {
+      if (target === source.id || !ids.has(target)) return;
+      if (!backlinks.has(target)) backlinks.set(target, []);
+      backlinks.get(target).push({ id: source.id, title: source.title });
+    });
+  });
+  backlinks.forEach(list => list.sort((a, b) => a.title.localeCompare(b.title)));
+  return backlinks;
+}
+
+function backlinksHtml(list) {
+  if (!list || !list.length) return '';
+  const items = list.map(note => `<li><a href="/notes/${note.id}.html" class="note-link" data-note="${note.id}">${escapeHtml(note.title)}</a></li>`).join('');
+  return `<nav class="note-backlinks" aria-label="Linked from"><h2 class="note-backlinks-title">Linked from</h2><ul>${items}</ul></nav>`;
+}
+
 // Format a date string like 2025-09-18 to "Sep 18, 2025"
 function formatDate(s) {
   try {
@@ -209,11 +236,17 @@ function buildSite() {
   if (fs.existsSync(notesDirPath)) {
     const noteFiles = fs.readdirSync(notesDirPath).filter(file => file.endsWith('.md'));
     const publishedNoteIds = new Set();
+    const publishedNotes = [];
     noteFiles.forEach(file => {
       const { attributes, body } = frontMatter(fs.readFileSync(path.join(notesDirPath, file), 'utf8'));
       const noteId = slugify(file.replace('.md', ''));
-      if (noteMetadata(attributes, body, noteId).publish) publishedNoteIds.add(noteId);
+      const metadata = noteMetadata(attributes, body, noteId);
+      if (metadata.publish) {
+        publishedNoteIds.add(noteId);
+        publishedNotes.push({ id: noteId, title: metadata.title, body });
+      }
     });
+    const backlinks = collectBacklinks(publishedNotes);
     
     noteFiles.forEach(file => {
       const filePath = path.join(notesDirPath, file);
@@ -272,7 +305,7 @@ ${NOTE_CSS}
         <div class="note-panel panel-current">
             <div class="note-content">
                 <h1 class="note-title">${attributes.title || 'Note'}</h1>
-                <div class="note-body">${htmlContent}</div>
+                <div class="note-body">${htmlContent}${backlinksHtml(backlinks.get(noteId))}</div>
                 ${metaChips.length ? `<div class="note-kicker note-kicker-bottom">${metaChips.map(item => `<span class="note-chip">${escapeHtml(item)}</span>`).join('')}</div>` : ''}
                 ${attributes.last_modified ? `
                 <div class="note-meta">

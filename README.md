@@ -69,6 +69,8 @@ Use Obsidian-style links:
 
 The site turns those into contextual note links. A link to a note that does not exist yet, or to a `publish: false` note, shows as plain text instead of a broken link.
 
+Each note also ends with a **Linked from** list: the published notes that link to it, so readers can follow a rabbit hole backwards. Private notes are never listed there.
+
 ## Recommended Frontmatter
 
 ```yaml
