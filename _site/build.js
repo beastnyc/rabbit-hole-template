@@ -66,20 +66,32 @@ function copyDirRecursive(src, dest) {
 // Convert Obsidian wiki-links to HTML links
 // knownNoteIds (optional Set): ids of notes that publish. Links to anything
 // else (not written yet, or publish: false) render as plain text, not a 404.
+// Code (inline or block) is skipped, so a note can show the [[link]] syntax.
 function convertWikiLinks(text, knownNoteIds) {
-  return text.replace(/\[\[([^\]]+)\]\]/g, (match, linkText) => {
-    const decodedLinkText = linkText
-      .replace(/&#39;/g, "'")
-      .replace(/&quot;/g, '"')
-      .replace(/&amp;/g, '&');
-    const [target, display] = decodedLinkText.split('|').map(value => value.trim());
+  return outsideCode(text, part => part.replace(/\[\[([^\]]+)\]\]/g, (match, linkText) => {
+    const [target, display] = decodeEntities(linkText).split('|').map(value => value.trim());
     const noteId = slugify(target);
     const label = display || target;
     if (knownNoteIds && !knownNoteIds.has(noteId)) {
       return `<span class="note-link-missing">${label}</span>`;
     }
     return `<a href="/notes/${noteId}.html" class="note-link" data-note="${noteId}">${label}</a>`;
-  });
+  }));
+}
+
+function decodeEntities(value) {
+  return value
+    .replace(/&#39;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, '&');
+}
+
+// Run fn on the parts of rendered HTML outside <pre> and <code>.
+function outsideCode(html, fn) {
+  return html
+    .split(/(<pre[\s>][\s\S]*?<\/pre>|<code[\s>][\s\S]*?<\/code>)/)
+    .map((part, i) => (i % 2 ? part : fn(part)))
+    .join('');
 }
 
 // Who links here: for each published note, the published notes that link to
@@ -90,9 +102,12 @@ function collectBacklinks(publishedNotes) {
   const backlinks = new Map();
   publishedNotes.forEach(source => {
     const targets = new Set();
-    for (const [, linkText] of source.body.matchAll(/\[\[([^\]]+)\]\]/g)) {
-      targets.add(slugify(linkText.split('|')[0].trim()));
-    }
+    outsideCode(marked(source.body), part => {
+      for (const [, linkText] of part.matchAll(/\[\[([^\]]+)\]\]/g)) {
+        targets.add(slugify(decodeEntities(linkText).split('|')[0].trim()));
+      }
+      return part;
+    });
     targets.forEach(target => {
       if (target === source.id || !ids.has(target)) return;
       if (!backlinks.has(target)) backlinks.set(target, []);
