@@ -38,7 +38,7 @@ test('the main landmark keeps the full-height stack layout', () => {
 
 test('note pages calm animations and smooth scrolling for reduced-motion users', () => {
   const html = read('index.html');
-  const block = html.match(/@media \(prefers-reduced-motion: reduce\)\s*\{([\s\S]*?)\n\}/);
+  const block = html.match(/@media \(prefers-reduced-motion: reduce\)\s*\{([\s\S]*?)\n        \}/);
   assert.ok(block, 'no prefers-reduced-motion block');
   assert.match(block[1], /transition:\s*none\s*!important/);
   assert.match(block[1], /scroll-behavior:\s*auto\s*!important/);

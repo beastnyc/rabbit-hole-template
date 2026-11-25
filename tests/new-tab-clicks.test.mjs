@@ -27,3 +27,8 @@ test('the no-React fallback makes the same check', () => {
   const fn = build.slice(build.indexOf('// Intercept internal note links broadly'), build.indexOf('// Determine which panel the click came from'));
   assert.match(fn, /e\.metaKey \|\| e\.ctrlKey \|\| e\.shiftKey \|\| e\.altKey/);
 });
+test('a modified click on a link in an earlier note does not close the notes after it', () => {
+  const panel = src.slice(src.indexOf('const Panel ='), src.indexOf('export default'));
+  assert.match(panel, /closest\('a\[href\]'\) && !isPlainClick\(e\)\) return;/);
+  assert.doesNotMatch(panel, /onClick=\{shouldHandleClick \? onClick : undefined\}/);
+});

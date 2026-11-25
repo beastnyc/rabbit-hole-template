@@ -62,6 +62,11 @@ const Panel = React.forwardRef(function Panel(
   if (panelType === 'collapsed') classNames.push('collapsed');
 
   const shouldHandleClick = !['current', 'current-split'].includes(panelType);
+  // Opening a link from here in a new tab should leave the notes after it open.
+  const handlePanelClick = (e) => {
+    if (e.target.closest('a[href]') && !isPlainClick(e)) return;
+    onClick();
+  };
   const markedBody = React.useMemo(
     () => markActiveLinkHtml(body, activeChildHref),
     [body, activeChildHref]
@@ -74,7 +79,7 @@ const Panel = React.forwardRef(function Panel(
       className={classNames.join(' ')}
       ref={ref}
       style={{ zIndex }}
-      onClick={shouldHandleClick ? onClick : undefined}
+      onClick={shouldHandleClick ? handlePanelClick : undefined}
       {...collapsedPanelProps({ collapsed: panelType === 'collapsed', title, onActivate: onClick })}
     >
       {panelType === 'collapsed' ? (
