@@ -692,8 +692,11 @@ body {
         justify-content: space-between;
     }
 
+    /* Under 16px, iPhone Safari zooms the page when the box is tapped */
     .search-input {
         width: 150px;
+        max-width: 100%;
+        font-size: 16px;
     }
 
     .search-input:focus {
