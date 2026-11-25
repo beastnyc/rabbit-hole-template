@@ -437,6 +437,11 @@ body {
     white-space: nowrap;
 }
 
+.note-panel.collapsed:focus-visible {
+    outline: 2px solid var(--text-primary);
+    outline-offset: -2px;
+}
+
 .note-panel.panel-collapsed:hover .collapsed-title,
 .note-panel.collapsed:hover .collapsed-title {
     color: #fff;

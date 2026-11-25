@@ -1,5 +1,6 @@
 import React from 'react';
 import { stackScrollTarget } from './stackScroll.mjs';
+import { collapsedPanelProps } from './collapsedPanel.mjs';
 import { panelsToKeep } from './stackHistory.mjs';
 import { isPlainClick } from './plainClick.mjs';
 
@@ -72,6 +73,7 @@ const Panel = React.forwardRef(function Panel(
       ref={ref}
       style={{ zIndex }}
       onClick={shouldHandleClick ? onClick : undefined}
+      {...collapsedPanelProps({ collapsed: panelType === 'collapsed', title, onActivate: onClick })}
     >
       {panelType === 'collapsed' ? (
         <div className="collapsed-content">
@@ -166,6 +168,18 @@ export default function StackedApp({ initial }) {
   React.useEffect(() => {
     setPreview(null);
   }, [currentPanel?.href]);
+
+  // The preview covers text, so Escape must close it without moving the pointer or focus.
+  React.useEffect(() => {
+    if (!preview) return undefined;
+    const dismissOnEscape = (e) => {
+      if (e.key !== 'Escape') return;
+      previewRequestRef.current += 1;
+      setPreview(null);
+    };
+    window.addEventListener('keydown', dismissOnEscape);
+    return () => window.removeEventListener('keydown', dismissOnEscape);
+  }, [preview]);
 
   // Opening a note pushes a history entry, so Back must close it again.
   React.useEffect(() => {
