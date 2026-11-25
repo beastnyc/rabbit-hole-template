@@ -1,5 +1,6 @@
 import React from 'react';
 import { stackScrollTarget } from './stackScroll.mjs';
+import { panelsToKeep } from './stackHistory.mjs';
 
 function getIdFromHref(href) {
   const match = href && href.match(/\/notes\/([^/.]+)(?:\.html)?/);
@@ -164,6 +165,25 @@ export default function StackedApp({ initial }) {
   React.useEffect(() => {
     setPreview(null);
   }, [currentPanel?.href]);
+
+  // Opening a note pushes a history entry, so Back must close it again.
+  React.useEffect(() => {
+    const onPopState = () => {
+      const ids = new URL(window.location.href).searchParams.getAll('stackedNotes');
+      const open = panelsRef.current;
+      const keep = panelsToKeep(open.map((panel) => panel.id), ids);
+      if (keep < 0) {
+        window.location.reload();
+        return;
+      }
+      if (keep === open.length) return;
+      const next = open.slice(0, keep);
+      panelsRef.current = next;
+      setPanels(next);
+    };
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, []);
 
   const openNote = React.useCallback(async (href, baseIndex, { historyMode = 'push' } = {}) => {
     try {
