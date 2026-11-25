@@ -180,6 +180,13 @@ body {
     opacity: 1;
 }
 
+.note-main {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
 #stack-root {
     flex: 1 1 auto;
     min-height: 0;
@@ -734,5 +741,15 @@ body {
     .note-title {
         font-size: 24px;
         padding-right: 42px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+        animation: none !important;
+        scroll-behavior: auto !important;
     }
 }

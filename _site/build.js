@@ -305,7 +305,7 @@ ${NOTE_CSS}
     </style>
 </head>
 <body>
-    <div class="top-nav">
+    <header class="top-nav">
         <div class="nav-left"><a href="/" class="site-title">Rabbit Hole</a></div>
         <div class="nav-right">
             <div class="search-container">
@@ -314,7 +314,8 @@ ${NOTE_CSS}
                 <div class="search-results" id="searchResults"></div>
             </div>
         </div>
-    </div>
+    </header>
+    <main class="note-main">
     <!-- Static fallback container (hidden once React mounts) -->
     <div class="container" id="container">
         <div class="note-panel panel-current">
@@ -336,6 +337,7 @@ ${NOTE_CSS}
 
     <!-- React root for note stacking -->
     <div id="stack-root" style="display:none"></div>
+    </main>
     <script type="application/json" id="note-data">${JSON.stringify(metadata).replace(/</g, '\\u003c')}</script>
 
     <script>

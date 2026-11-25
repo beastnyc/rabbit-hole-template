@@ -1,6 +1,7 @@
 import React from 'react';
 import { stackScrollTarget } from './stackScroll.mjs';
 import { collapsedPanelProps } from './collapsedPanel.mjs';
+import { panelHeadingTag } from './panelHeading.mjs';
 import { panelsToKeep } from './stackHistory.mjs';
 import { isPlainClick } from './plainClick.mjs';
 
@@ -41,6 +42,7 @@ const Panel = React.forwardRef(function Panel(
 ) {
   const positionFromEnd = totalPanels - 1 - index;
   const zIndex = 1000 + index;
+  const Heading = panelHeadingTag(index, totalPanels);
 
   let panelType = 'collapsed';
 
@@ -81,7 +83,7 @@ const Panel = React.forwardRef(function Panel(
         </div>
       ) : (
         <div className="note-content">
-          <h1 className="note-title">{title || 'Note'}</h1>
+          <Heading className="note-title">{title || 'Note'}</Heading>
           <div className="note-body" dangerouslySetInnerHTML={{ __html: markedBody }} />
           {metaChips.length > 0 && (
             <div className="note-kicker note-kicker-bottom">
@@ -159,6 +161,7 @@ export default function StackedApp({ initial }) {
       const lastPanel = panelRefs.current[panels.length - 1];
       container.scrollTo(stackScrollTarget({
         flexDirection: window.getComputedStyle(container).flexDirection,
+        reducedMotion: Boolean(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches),
         panelCount: panels.length,
         lastPanelOffsetTop: lastPanel ? lastPanel.offsetTop : 0,
       }));
