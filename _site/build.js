@@ -529,6 +529,8 @@ ${NOTE_CSS}
                 // Intercept internal note links broadly: data-note, .note-link, or href starts with /notes/
                 const link = (e.target.closest && (e.target.closest('a[data-note], a.note-link, a[href^="/notes/"]')));
                 if (!link) return;
+                // Modified clicks mean new tab/window: leave them to the browser
+                if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
                 const panelEl = e.target.closest('.note-panel');
                 if (!panelEl) return;
                 e.preventDefault();

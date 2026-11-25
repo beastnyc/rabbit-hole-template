@@ -1,6 +1,7 @@
 import React from 'react';
 import { stackScrollTarget } from './stackScroll.mjs';
 import { panelsToKeep } from './stackHistory.mjs';
+import { isPlainClick } from './plainClick.mjs';
 
 function getIdFromHref(href) {
   const match = href && href.match(/\/notes\/([^/.]+)(?:\.html)?/);
@@ -338,6 +339,7 @@ export default function StackedApp({ initial }) {
 
   const handleClick = React.useCallback(
     (e) => {
+      if (!isPlainClick(e)) return;
       const link =
         e.target.closest &&
         e.target.closest('a[data-note], a.note-link, a[href^="/notes/"]');
